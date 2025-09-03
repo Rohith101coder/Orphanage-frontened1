@@ -134,7 +134,7 @@
     // Fetch orphanage names from the database
     async function fetchOrphanages() {
       try {
-        const response = await fetch("https://orphanagecare-backend.onrender.com/get-orphanages");
+        const response = await fetch("https://orphanage-backend1.onrender.com/get-orphanages");
         const orphanages = await response.json();
 
         const orphanageContainer = document.getElementById("orphanageContainer");
@@ -172,3 +172,4 @@
   </script>
 </body>
 </html>
+

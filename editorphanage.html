@@ -125,7 +125,7 @@
 
     // Fetch existing orphanage details
     // Fetch existing orphanage details
-fetch(`https://orphanagecare-backend.onrender.com/get-OrphanageDetails-by-port/${portNumber}`)
+fetch(`https://orphanage-backend1.onrender.com/get-OrphanageDetails-by-port/${portNumber}`)
   .then(response => {
     if (!response.ok) {
       throw new Error('Orphanage not found');
@@ -170,7 +170,7 @@ fetch(`https://orphanagecare-backend.onrender.com/get-OrphanageDetails-by-port/$
       };
 
       try {
-        const response = await fetch(`http://localhost:5001/update-OrphanageDetails/${portNumber}`, {
+        const response = await fetch(`https://orphanage-backend1.onrender.com/update-OrphanageDetails/${portNumber}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -193,3 +193,4 @@ fetch(`https://orphanagecare-backend.onrender.com/get-OrphanageDetails-by-port/$
   </script>
 </body>
 </html>
+

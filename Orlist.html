@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orphanages List - OrphanageCare Hub</title>
+  <style>
+    /* ===== Global Reset ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      background: #f5f7fa;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 25px;
+      color: #2c3e50;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* ===== Container ===== */
+    .orphanage-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    /* ===== Orphanage Card ===== */
+    .orphanage-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 25px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .orphanage-card:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(135deg, #0066ff, #00cc88);
+    }
+
+    .orphanage-card h3 {
+      color: #0066ff;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .orphanage-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* ===== Buttons ===== */
+    .view-details-btn,
+    .redirect-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .view-details-btn {
+      background: linear-gradient(135deg, #0066ff, #0044cc);
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    .view-details-btn:hover {
+      background: linear-gradient(135deg, #0044cc, #003399);
+      transform: scale(1.05);
+    }
+
+    .redirect-btn {
+      background: #00cc66;
+      color: #fff;
+      margin-top: 30px;
+    }
+
+    .redirect-btn:hover {
+      background: #00994d;
+      transform: scale(1.05);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .orphanage-card {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Orphanages List</h1>
+
+  <div class="orphanage-container" id="orphanageContainer">
+    <!-- Orphanage details will be inserted here dynamically -->
+  </div>
+
+  <button class="redirect-btn" onclick="redirectToHome()">⬅ Back to Home</button>
+
+  <script>
+    // Fetch orphanage names from the database
+    async function fetchOrphanages() {
+      try {
+        const response = await fetch("https://orphanagecare-backend.onrender.com/get-orphanages");
+        const orphanages = await response.json();
+
+        const orphanageContainer = document.getElementById("orphanageContainer");
+        orphanages.forEach(orphanage => {
+          const orphanageCard = document.createElement("div");
+          orphanageCard.classList.add("orphanage-card");
+
+          const orphanageName = document.createElement("h3");
+          orphanageName.textContent = orphanage.orphanageName;
+
+          const viewDetailsButton = document.createElement("button");
+          viewDetailsButton.classList.add("view-details-btn");
+          viewDetailsButton.textContent = "View Details";
+
+          orphanageCard.appendChild(orphanageName);
+          orphanageCard.appendChild(viewDetailsButton);
+          orphanageContainer.appendChild(orphanageCard);
+
+          // Redirect to details page
+          viewDetailsButton.addEventListener("click", () => {
+            window.location.href = `totaldetails.html?id=${orphanage._id}`;
+          });
+        });
+      } catch (error) {
+        console.error("Error fetching orphanages:", error);
+      }
+    }
+
+    // Fetch orphanages on page load
+    window.onload = fetchOrphanages;
+
+    function redirectToHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

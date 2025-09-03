@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donor Login - OrphanageCare Hub</title>
+  <style>
+   
+   body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+  .login-container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 26px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: #f1f7ff;
+    transition: border 0.3s;
+    box-sizing: border-box;
+  }
+
+  input:focus {
+    border-color: #28a745;
+    outline: none;
+    box-shadow: 0 0 6px rgba(40, 167, 69, 0.2);
+  }
+
+  .show-password {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .show-password label {
+    cursor: pointer;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #28a745;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #218838;
+  }
+</style>
+
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Donor Login</h2>
+    <form id="loginForm">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required />
+
+      <div class="show-password">
+        <input type="checkbox" id="togglePassword" />
+        <label for="togglePassword">Show Password</label>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('loginForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const formData = {
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+        };
+
+        try {
+          const response = await fetch('https://orphanagecare-backend.onrender.com/login-donor', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+
+          const contentType = response.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            alert('An unexpected error occurred: Response is not JSON');
+            console.log('Response:', await response.text());
+            return;
+          }
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert(data.message);
+            window.location.href = 'Orlist.html';
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          alert('An error occurred: ' + error.message);
+          console.log('Error:', error);
+        }
+      });
+
+      // Toggle password visibility
+      document.getElementById('togglePassword').addEventListener('change', function () {
+        const passwordInput = document.getElementById('password');
+        passwordInput.type = this.checked ? 'text' : 'password';
+      });
+    });
+  </script>
+</body>
+</html>

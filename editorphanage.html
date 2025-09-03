@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Orphanage Details - OrphanageCare Hub</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: auto;
+      margin: 0;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .button1 {
+      background-color: #1660f4;
+      width: 150px;
+      height: 40px;
+    }
+
+    .button1:hover {
+      background-color: blue;
+    }
+
+    #map {
+      width: 400px;
+      height: 300px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Edit Orphanage Details</h2>
+    <input type="text" id="orphanageName" >
+    <input type="text" id="principalName" >
+    <input type="text" id="city" >
+    <input type="text" id="state" >
+    <input type="text" id="address" >
+    <input type="number" id="numChildren" >
+    <label for="needs">Current Needs:</label>
+    <textarea id="needs" rows="5" cols="50"></textarea>
+    <input type="text" id="latitude"  readonly>
+    <input type="text" id="longitude" readonly>
+    <div id="map"></div>
+    <button id="saveChangesBtn">Save Changes</button>
+  </div>
+
+  <button class="button1" onclick="window.location.href='index.html'">Back To Home</button>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const portNumber = urlParams.get('portNumber');
+
+    let map;
+    let marker;
+
+    // Initialize map with default coordinates
+    function initMap(lat = 20.5937, lng = 78.9629) {
+      map = L.map('map').setView([lat, lng], 5);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+      }).addTo(map);
+
+      map.on('click', function (e) {
+        const clickedLat = e.latlng.lat.toFixed(6);
+        const clickedLng = e.latlng.lng.toFixed(6);
+
+        document.getElementById('latitude').value = clickedLat;
+        document.getElementById('longitude').value = clickedLng;
+
+        if (marker) {
+          marker.setLatLng(e.latlng);
+        } else {
+          marker = L.marker(e.latlng).addTo(map);
+        }
+      });
+    }
+
+    // Call it immediately
+    initMap();
+
+    // Fetch existing orphanage details
+    // Fetch existing orphanage details
+fetch(`https://orphanagecare-backend.onrender.com/get-OrphanageDetails-by-port/${portNumber}`)
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Orphanage not found');
+    }
+    return response.json();
+  })
+  .then(data => {
+    document.getElementById('orphanageName').value = data.orphanageName || '';
+    document.getElementById('principalName').value = data.principalName || '';
+    document.getElementById('city').value = data.city || '';
+    document.getElementById('state').value = data.state || '';
+    document.getElementById('address').value = data.address || '';
+    document.getElementById('numChildren').value = data.numChildren || '';
+    document.getElementById('needs').value = data.needs || '';
+    document.getElementById('latitude').value = data.latitude || '';
+    document.getElementById('longitude').value = data.longitude || '';
+
+    if (data.latitude && data.longitude && map) {
+      const latlng = [parseFloat(data.latitude), parseFloat(data.longitude)];
+      map.setView(latlng, 12);
+      marker = L.marker(latlng).addTo(map);
+    }
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+    alert(error.message);
+  });
+
+
+    // Save changes button
+    document.getElementById('saveChangesBtn').addEventListener('click', async function () {
+      const orphanageDetails = {
+        orphanageName: document.getElementById('orphanageName').value,
+        principalName: document.getElementById('principalName').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        address: document.getElementById('address').value,
+        numChildren: document.getElementById('numChildren').value,
+        needs: document.getElementById('needs').value,
+        latitude: document.getElementById('latitude').value,
+        longitude: document.getElementById('longitude').value
+      };
+
+      try {
+        const response = await fetch(`http://localhost:5001/update-OrphanageDetails/${portNumber}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orphanageDetails),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message);
+        }
+
+        const result = await response.json();
+        alert(result.message);
+      } catch (error) {
+        console.error('Failed to update orphanage:', error);
+        alert('Failed to update orphanage details. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>

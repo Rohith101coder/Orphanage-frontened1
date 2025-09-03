@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OrphanageCare Hub</title>
+  <style>
+    /* ===== Global Reset ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      background-color: #f5f7fa;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    /* ===== Header ===== */
+    header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 15px 50px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2c3e50;
+      letter-spacing: 1px;
+    }
+
+    /* ===== Navigation Buttons ===== */
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-buttons button {
+      background: linear-gradient(135deg, #0066ff, #0044cc);
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .nav-buttons button:hover {
+      background: linear-gradient(135deg, #0044cc, #003399);
+      transform: translateY(-2px);
+    }
+
+    /* ===== Hero Section ===== */
+    .container {
+      background: linear-gradient(to right, rgba(0, 0, 50, 0.65), rgba(0, 0, 80, 0.6)),
+                  url('images/orphanage.jpg') center/cover no-repeat;
+      height: 75vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      padding: 20px;
+    }
+
+    .login-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .login-buttons button {
+      background: white;
+      color: #0044cc;
+      padding: 14px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .login-buttons button:hover {
+      background: #0044cc;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    /* ===== Moto Section ===== */
+    .moto-section {
+      padding: 60px 20px;
+      background: #ffffff;
+      text-align: center;
+    }
+
+    .moto-section h2 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+      color: #2c3e50;
+      font-weight: 700;
+    }
+
+    .highlights {
+      font-size: 1.2rem;
+      margin: 12px 0;
+      color: #555;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      background: #2c3e50;
+      color: #eee;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-icons img {
+      width: 35px;
+      height: 35px;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.1);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .nav-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .login-buttons {
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>OrphanageCare Hub</h1>
+    <div class="nav-buttons">
+      <button onclick="location.href='donorregister.html'">Register as Donor</button>
+      <button onclick="location.href='orregister.html'">Register as Orphanage</button>
+      <button onclick="location.href='help.html'">Help</button>
+      <button onclick="location.href='team.html'">Our Team</button>
+      <button onclick="location.href='contact.html'">Contact</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="login-buttons">
+      <button onclick="location.href='Dlogin.html'">Login as Donor</button>
+      <button onclick="location.href='Orlogin.html'">Login as Orphanage</button>
+    </div>
+  </div>
+
+  <div class="moto-section">
+    <h2>Our Moto</h2>
+    <div class="highlights">🌟 Empowering orphanages</div>
+    <div class="highlights">🤝 Connecting donors with needs</div>
+    <div class="highlights">🌍 Building a supportive community</div>
+  </div>
+
+  <footer>
+    <p>Follow us on</p>
+    <div class="social-icons">
+      <img src="images/insta.jpg" alt="Instagram Logo">
+      <img src="images/face.jpg" alt="Facebook Logo">
+      <img src="images/you.jpg" alt="YouTube Logo">
+    </div>
+  </footer>
+
+</body>
+</html>
